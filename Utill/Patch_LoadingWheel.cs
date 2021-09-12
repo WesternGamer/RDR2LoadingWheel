@@ -35,21 +35,46 @@ namespace RDR2LoadingWheel.Utill
             m_texture = ___m_texture;
             m_textureSize = ___m_textureSize;
 
+            //Will be set in an internal resource when other issues are fixed.
             m_texture = @"D:\Games\steamapps\common\SpaceEngineers\Bin64\frame_0_delay-0.02s.png";
             m_textureSize = MyRenderProxy.GetTextureSize(m_texture);
 
             m_textureSize = DivideVector(m_textureSize, 2f);
 
-            Vector2 positionAbsolute = __instance.GetPositionAbsolute();
-            Color color = new Color(transitionAlpha * new Color(0, 0, 0, 80).ToVector4());
-            DrawWheel(positionAbsolute + MyGuiConstants.SHADOW_OFFSET, m_wheelScale, color, m_rotatingAngle, m_rotationSpeed);
-            Color color2 = MyGuiControlBase.ApplyColorMaskModifiers(__instance.ColorMask, __instance.Enabled, transitionAlpha);
-            DrawWheel(positionAbsolute, m_wheelScale, color2, m_rotatingAngle, m_rotationSpeed);
+            
 
-            void DrawWheel(Vector2 position, float scale, Color internalColor, float rotationAngle, float rotationSpeed)
+            for (float speed = 1; true; AddFloat(speed, 100))
             {
-                Vector2 normalizedSize = MyGuiManager.GetNormalizedSize(m_textureSize, scale);
-                MyGuiManager.DrawSpriteBatch(m_texture, position, normalizedSize, internalColor, MyGuiDrawAlignEnum.HORISONTAL_CENTER_AND_VERTICAL_CENTER, false, false, null, rotationAngle, __instance.ManualRotationUpdate ? 0f : rotationSpeed);
+                
+                m_rotatingAngle = (float)MyEnvironment.TickCount / speed * m_rotationSpeed;
+
+
+
+                Vector2 positionAbsolute = __instance.GetPositionAbsolute();
+                Color color = new Color(transitionAlpha * new Color(0, 0, 0, 80).ToVector4());
+                DrawWheel(positionAbsolute + MyGuiConstants.SHADOW_OFFSET, m_wheelScale, color, m_rotatingAngle, m_rotationSpeed);
+                Color color2 = MyGuiControlBase.ApplyColorMaskModifiers(__instance.ColorMask, __instance.Enabled, transitionAlpha);
+                DrawWheel(positionAbsolute, m_wheelScale, color2, m_rotatingAngle, m_rotationSpeed);
+
+                
+
+                void DrawWheel(Vector2 position, float scale, Color internalColor, float rotationAngle, float rotationSpeed)
+                {
+                    Vector2 normalizedSize = MyGuiManager.GetNormalizedSize(m_textureSize, scale);
+                    MyGuiManager.DrawSpriteBatch(m_texture, position, normalizedSize, internalColor, MyGuiDrawAlignEnum.HORISONTAL_CENTER_AND_VERTICAL_CENTER, false, false, null, rotationAngle, __instance.ManualRotationUpdate ? 0f : rotationSpeed);
+                }
+
+
+
+
+                
+
+            }
+            
+            float AddFloat(float float1, float float2)
+            {
+                float result = float1 + float1;
+                return result;
             }
 
             Vector2 DivideVector(Vector2 vector, float float1)
@@ -64,7 +89,6 @@ namespace RDR2LoadingWheel.Utill
 
                 return result;
             }
-
             return false;
         }
 
@@ -72,12 +96,13 @@ namespace RDR2LoadingWheel.Utill
         {
             bool lastUpadated = false;
             base.Update();
+
             if (lastUpadated)
             {
                 lastUpadated = false;
                 return;
             }
-
+            
 
         }
 
@@ -85,7 +110,7 @@ namespace RDR2LoadingWheel.Utill
     }
 
     [HarmonyPatch(typeof(MyGuiControlRotatingWheel), "UpdateRotation")]
-    public class Patch_LoadingRotation : MyGuiControlRotatingWheel
+    public class Patch_LoadingRotation
     {
         private static float m_rotationSpeed;
 
@@ -99,13 +124,13 @@ namespace RDR2LoadingWheel.Utill
 
         public static bool Prefix(MyGuiControlRotatingWheel __instance, float ___m_rotationSpeed, float ___m_rotatingAngle, float ___m_wheelScale, string ___m_texture, Vector2 ___m_textureSize)
         {
-            m_rotationSpeed = ___m_rotationSpeed;
+            /*m_rotationSpeed = ___m_rotationSpeed;
             m_rotatingAngle = ___m_rotatingAngle;
             m_wheelScale = ___m_wheelScale;
             m_texture = ___m_texture;
             m_textureSize = ___m_textureSize;
 
-            m_rotatingAngle = (float)MyEnvironment.TickCount / 1000f * m_rotationSpeed;
+            m_rotatingAngle = (float)MyEnvironment.TickCount / 1000f * m_rotationSpeed;*/
             return false;
         }
     }
