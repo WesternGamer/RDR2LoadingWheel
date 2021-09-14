@@ -1,11 +1,7 @@
 ﻿using HarmonyLib;
 using Sandbox.Graphics;
 using Sandbox.Graphics.GUI;
-using System;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows.Threading;
-using VRage.Library;
 using VRage.Utils;
 using VRageMath;
 using VRageRender;
@@ -44,7 +40,7 @@ namespace RDR2LoadingWheel.Utill
             m_backgroundTransitionAlpha = __1;
 
             //Will be set in an internal resource when other issues are fixed.
-            m_texture = @"D:\Games\steamapps\common\SpaceEngineers\Bin64\frame_0_delay-0.02s.png";
+            m_texture = @"D:\Games\steamapps\common\SpaceEngineers\Bin64\LoadingWheel.png";
             m_textureSize = MyRenderProxy.GetTextureSize(m_texture);
 
             m_textureSize = DivideVector(m_textureSize, 2f);
@@ -95,9 +91,6 @@ namespace RDR2LoadingWheel.Utill
                 }
             }
         }
-
-
-
     }
 
     [HarmonyPatch(typeof(MyGuiControlRotatingWheel), "UpdateRotation")]
